@@ -1,11 +1,12 @@
 CC :=clang
 TARGET:=baurinum
+LDFLAGS=-lm
 
 all: $(TARGET)
 	@./$(TARGET)
 
 $(TARGET): main.o
-	gcc main.o -o $(TARGET)
+	$(CC) main.o -o $(TARGET) $(LDFLAGS)
 
 
 main.o: main.c
