@@ -86,6 +86,8 @@ void bn_clear(bnum* b) {
   }
 }
 
+// set the capacity of `b` to b->capacity + size;
+// and allocate memory for it.
 bnerr bn_grow_by(bnum* b, int size) {
   int oldsize = b->cap;
   b->cap = oldsize + size;
@@ -144,6 +146,7 @@ void bn_debug(bnum* b) {
 
 static inline int is_endig(char c) { return c <= '9' && c >= '0'; }
 
+// reverse the endian-ness
 void bn_rev(bnum* b) {
   for (int i = 0; i < b->len / 2; i++) {
     int tmp = b->digits[i];
@@ -152,6 +155,7 @@ void bn_rev(bnum* b) {
   }
 }
 
+// set a string (base 10)
 bnerr bn_set_str(bnum* b, char* str) {
   char* ptr = str;
   int is_neg = 0;
@@ -179,6 +183,7 @@ bnerr bn_set_str(bnum* b, char* str) {
   return BN_OK;
 }
 
+// set integer
 bnerr bn_set_int(bnum* b, int n) {
   int tn = n;
   if (n < 0) {
@@ -201,6 +206,7 @@ bnerr bn_set_int(bnum* b, int n) {
   return BN_OK;
 }
 
+// set long long integer
 bnerr bn_set_lli(bnum* b, long long int n) {
   unsigned long long int tn;
   if (n == 0) {
@@ -229,6 +235,7 @@ bnerr bn_set_lli(bnum* b, long long int n) {
   return BN_OK;
 }
 
+// set uint64_t
 bnerr bn_set_uint64(bnum* b, uint64_t n) {
   if (n == 0) {
     b->sign = BN_ZERO;
@@ -249,6 +256,7 @@ bnerr bn_set_uint64(bnum* b, uint64_t n) {
   return BN_OK;
 }
 
+// set uint32_t
 bnerr bn_set_uint32(bnum* b, uint32_t n) {
   if (n == 0) {
     b->sign = BN_ZERO;
@@ -269,6 +277,7 @@ bnerr bn_set_uint32(bnum* b, uint32_t n) {
   return BN_OK;
 }
 
+// set int64_t
 bnerr bn_set_int64(bnum* b, int64_t n) {
   if (n == 0) {
     b->sign = BN_ZERO;
@@ -329,16 +338,19 @@ bnerr bn_set_d(bnum* b, double n) {
   return BN_OK;
 }*/
 
+// POSTPONED
 bnerr bn_set_ld(bnum* b, long double n) {
   long long int tn = (long long int)ceill(n);
   return bn_set_lli(b, tn);
 }
 
+// POSTPONED
 bnerr bn_set_f(bnum* b, float n) {
   long long int tn = (long long int)ceilf(n);
   return bn_set_lli(b, tn);
 }
 
+// (unsigned) Compare L and R; does not take sign into account;
 bn_comp_result bn_ucmp(bnum* l, bnum* r) {
   if (l->len > r->len) {
     return BN_GT;
@@ -358,6 +370,7 @@ bn_comp_result bn_ucmp(bnum* l, bnum* r) {
   return BN_EQ;
 }
 
+//(Signed) compare
 bn_comp_result bn_cmp(bnum* l, bnum* r) {
   if (l->sign != r->sign) {
     if (l->sign == BN_NEG) {
@@ -373,6 +386,7 @@ bn_comp_result bn_cmp(bnum* l, bnum* r) {
   }
 }
 
+// trim excess zeros
 void bn_trim(bnum* b) {
   while (b->len > 0 && b->digits[b->len - 1] == 0) {
     b->cap -= 1;
@@ -414,6 +428,7 @@ bnerr bn_clone(bnum* res, bnum* input) {
   return BN_OK;
 }
 
+// Initialize l and make it a clone of r
 bnerr bn_dup_init(bnum* l, bnum* r) {
   bnerr err = bn_boot(l);
   if (err != BN_OK) {
@@ -422,6 +437,7 @@ bnerr bn_dup_init(bnum* l, bnum* r) {
   return bn_clone(l, r);
 }
 
+// Zero the digits
 void bn_mkzero(bnum* b) {
   bdigit* ptr = b->digits;
   b->sign = BN_ZERO;
@@ -432,6 +448,7 @@ void bn_mkzero(bnum* b) {
   }
 }
 
+// res = |inp|
 bnerr bn_abs(bnum* res, bnum* inp) {
   if (res != inp) {
     bnerr err = bn_clone(res, inp);
@@ -444,6 +461,7 @@ bnerr bn_abs(bnum* res, bnum* inp) {
   return BN_OK;
 }
 
+// res = -inp
 bnerr bn_make_neg(bnum* res, bnum* inp) {
   if (res != inp) {
     bnerr err = bn_clone(res, inp);
