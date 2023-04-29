@@ -1,0 +1,17 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-c",
+      "-o",
+      "main.o",
+      "main.c"
+    ],
+    "directory": "/home/palash/d/baurinum",
+    "file": "/home/palash/d/baurinum/main.c",
+    "output": "/home/palash/d/baurinum/main.o"
+  }
+]
