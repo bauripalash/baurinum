@@ -1,6 +1,7 @@
 # baurinum
 > Simple and somewhat fast prototype bignum library written in C
 
+
 ## Why
 There exists many optimized production grade `bignum` libraries, but why 
 create own? You might ask. This project has been started as a part of 
@@ -27,5 +28,8 @@ would do the job, on *nix systems or on windows MSYS2, just run `make` and it
 will build it instantly, for MSVC you might need to create special scripts,
 mostly 1 or 2 lines do the job.
 
-# License
+## License
 MIT
+
+## ⚠️ Motto
+Simplicity over Speed

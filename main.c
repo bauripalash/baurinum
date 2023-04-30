@@ -122,7 +122,7 @@ void bn_print(bnum* b) {
     return;
   }
 
-  printf("%c", b->sign == 0 ? '+' : '-');
+  printf("%c", b->sign != BN_NEG ? '+' : '-');
   for (int i = b->len - 1; i >= 0; i--) {
     printf("%ld", b->digits[i]);
   }
@@ -186,6 +186,7 @@ bnerr bn_set_str(bnum* b, char* str) {
 // set integer
 bnerr bn_set_int(bnum* b, int n) {
   int tn = n;
+  // printf("setting -> %d\n", n);
   if (n < 0) {
     b->sign = BN_NEG;
     tn = -tn;  // we must positive the int, otherwise the while loop won't work
@@ -484,6 +485,11 @@ bnerr bn_make_neg(bnum* res, bnum* inp) {
   return BN_OK;
 }
 
+
+// from tommath
+#define N_DBIT 60
+#define N_MASK ((((bdigit)1) << ((bdigit)N_DBIT)) - ((bdigit)1))
+
 bnerr bn_add(bnum* c, bnum* a, bnum* b) {
   int min;
   int max;
@@ -499,6 +505,7 @@ bnerr bn_add(bnum* c, bnum* a, bnum* b) {
     bgx = b;
   }
 
+  // printf("max->%d|min->%d\n", max, min);
   if (c->cap < max + 1) {
     err = bn_grow_by(c, max + 1);
     if (err != BN_OK) {
@@ -510,19 +517,31 @@ bnerr bn_add(bnum* c, bnum* a, bnum* b) {
   c->len = max + 1;
 
   bdigit u = 0;
-  bdigit *a_ptr, *b_ptr, *c_ptr;
   int i = 0;
-
-  a_ptr = a->digits;
-  b_ptr = b->digits;
-  c_ptr = c->digits;
-
+  // printf("mask -> %ld" , N_MASK);
   for (i = 0; i < min; i++) {
-    *c_ptr = *a_ptr++ + *b_ptr++ + u;
-    u = *c_ptr / 10;
-    *c_ptr = *c_ptr % 10;
-    c_ptr++;
-    printf("carry->%ld | %ld\n", u, *c_ptr);
+    c->digits[i] = a->digits[i] + b->digits[i] + u;
+    u = c->digits[i] / 10;
+    c->digits[i] %= 10;
+  }
+
+  // printf("|carry->%ld | %ld|\n", u, c->digits[i]);
+
+  if (min != max) {
+    for (; i < max; i++) {
+      c->digits[i] = bgx->digits[i] + u;
+      u = c->digits[i] / 10;
+      c->digits[i] %= 10;
+
+      //      printf("|>carry->%ld | %ld<|\n", u, c->digits[i]);
+    }
+  }
+
+  // c_ptr++;
+  c->digits[i] = u;
+
+  for (i = c->len; i < old_c_len; i++) {
+    c->digits[i] = 0;
   }
   bn_trim(c);
   return BN_OK;
@@ -535,8 +554,8 @@ int main(void) {
   bn_boot(&y);
   bn_boot(&x);
   bn_boot(&c);
-  bn_set_str(&x, "190");
-  bn_set_int(&y, 230);
+  bn_set_str(&x, "991");
+  bn_set_int(&y, 123);
   bn_add(&c, &x, &y);
   // bn_set_int(&y, 100);
   // bn_clone(&y, &x);
