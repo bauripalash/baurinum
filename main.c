@@ -9,7 +9,7 @@
 #define GROW_SIZE(cap) (cap + ((int)cap * GROW_BY))
 
 // A single digit
-typedef uint8_t bdigit;
+typedef uint64_t bdigit;
 
 /*
  * Sign of a Number
@@ -124,7 +124,7 @@ void bn_print(bnum* b) {
 
   printf("%c", b->sign == 0 ? '+' : '-');
   for (int i = b->len - 1; i >= 0; i--) {
-    printf("%d", b->digits[i]);
+    printf("%ld", b->digits[i]);
   }
 }
 
@@ -388,8 +388,9 @@ bn_comp_result bn_cmp(bnum* l, bnum* r) {
 
 // trim excess zeros
 void bn_trim(bnum* b) {
+  // printf("-trim-\n");
   while (b->len > 0 && b->digits[b->len - 1] == 0) {
-    b->cap -= 1;
+    b->len -= 1;
   }
 
   if (b->len == 0) {
@@ -483,19 +484,69 @@ bnerr bn_make_neg(bnum* res, bnum* inp) {
   return BN_OK;
 }
 
+bnerr bn_add(bnum* c, bnum* a, bnum* b) {
+  int min;
+  int max;
+  bnum* bgx;
+  bnerr err;
+  if (a->len > b->len) {
+    min = b->len;
+    max = a->len;
+    bgx = a;
+  } else {
+    min = a->len;
+    max = b->len;
+    bgx = b;
+  }
+
+  if (c->cap < max + 1) {
+    err = bn_grow_by(c, max + 1);
+    if (err != BN_OK) {
+      return err;
+    }
+  }
+
+  int old_c_len = c->len;
+  c->len = max + 1;
+
+  bdigit u = 0;
+  bdigit *a_ptr, *b_ptr, *c_ptr;
+  int i = 0;
+
+  a_ptr = a->digits;
+  b_ptr = b->digits;
+  c_ptr = c->digits;
+
+  for (i = 0; i < min; i++) {
+    *c_ptr = *a_ptr++ + *b_ptr++ + u;
+    u = *c_ptr / 10;
+    *c_ptr = *c_ptr % 10;
+    c_ptr++;
+    printf("carry->%ld | %ld\n", u, *c_ptr);
+  }
+  bn_trim(c);
+  return BN_OK;
+}
+
 int main(void) {
   bnum x;
   bnum y;
+  bnum c;
   bn_boot(&y);
   bn_boot(&x);
+  bn_boot(&c);
   bn_set_str(&x, "190");
+  bn_set_int(&y, 230);
+  bn_add(&c, &x, &y);
   // bn_set_int(&y, 100);
   // bn_clone(&y, &x);
   // bn_mkzero(&x);
-  bn_abs(&y, &x);
+  // bn_abs(&y, &x);
   bn_println(&x);
   bn_println(&y);
+  bn_println(&c);
   // bn_println(&x);*/
   bn_clear(&y);
   bn_clear(&x);
+  bn_clear(&c);
 }
