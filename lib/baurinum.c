@@ -38,8 +38,8 @@ void bn_clear(bnum* b) {
 // and allocate memory for it.
 bnerr bn_grow_by(bnum* b, int size) {
     int oldsize = b->cap;
-    printf("|>oldcap-> %d | newcap -> %d<|\n", oldsize, oldsize + size);
-    // b->digits = (bdigit*)realloc(b->digits, oldsize + size);
+    // printf("|>oldcap-> %d | newcap -> %d<|\n", oldsize, oldsize + size);
+    //  b->digits = (bdigit*)realloc(b->digits, oldsize + size);
 
     bdigit* old_buffer = (bdigit*)malloc(b->len * sizeof(bdigit));
     if (old_buffer == NULL) {

@@ -24,12 +24,12 @@ bnerr bn_set_digit(bnum* b, bdigit dig) {
 // set a string (base 10)
 bnerr bn_set_str(bnum* b, char* str) {
     char* ptr = str;
-    printf("->ptr->%s", ptr);
-    if (*ptr == '-') {
-        b->sign = BN_NEG;
-        ptr++;
-    } else if (*ptr == '+') {
+    printf("->ptr->%c", *ptr);
+    if (*ptr == '+') {
         b->sign = BN_POS;
+        ptr++;
+    } else if (*ptr == '-') {
+        b->sign = BN_NEG;
         ptr++;
     } else {
         b->sign = BN_POS;

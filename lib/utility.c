@@ -45,7 +45,7 @@ void bn_println(bnum* b) {
 
 void bn_debug(bnum* b) {
     printf("[ len->%d | cap->%d | sign->%c | digits->(", b->len, b->cap,
-           b->sign == 0 ? '+' : '-');
+           b->sign == BN_POS ? '+' : '-');
     if (b->digits != NULL) {
         bn_print(b);
     } else {
