@@ -32,10 +32,26 @@ memcheck: $(TARGET)
 debug: $(TARGET)
 	gdb ./$(TARGET)
 
+perf_build: LIB_CFLAGS:=-O3 $(LIB_CFLAGS) -pg
+perf_build: LDFLAGS+=-flto -pg
+perf_build: clean lib
+	$(CC) $(LIB_OBJ) main.c -o $(TARGET) $(LDFLAGS)
+perf: perf_build
+	perf record -g -F 999 ./$(TARGET)
+	perf script -F +pid > $(TARGET).perf
+
+prof: perf_build
+	./$(TARGET)
+	gprof ./$(TARGET) > baurinum.gmon.txt
+
 fmt:
 	clang-format -i -style=file lib/*.c lib/*.h main.c
 
 clean:
 	rm -rf *.o
+	rm -rf *.perf
+	rm -rf *.data
+	rm -rf *.gmon.txt 
+	rm -rf gmon.out
 	rm -rf build/
 
