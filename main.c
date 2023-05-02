@@ -7,9 +7,14 @@
 #include "lib/baurinum.h"
 
 int main(void) {
-    bnum a;
-    bn_boot(&a);
-    bn_set_int(&a, 100);
-    bn_println(&a);
-    bn_clear(&a);
+    bnum b;
+    char* x = "11111111111111111111111111111";
+    //    char * y = "11111111111111111111111111111";
+    bn_boot(&b);
+    bnerr err = bn_set_str(&b, x);
+    if (err != BN_OK) {
+        fprintf(stderr, "set str failed");
+    }
+    bn_debug(&b);
+    bn_clear(&b);
 }

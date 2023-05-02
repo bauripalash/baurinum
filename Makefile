@@ -12,9 +12,10 @@ LDFLAGS=-lm
 TARGET:=bnmain
 
 all: $(TARGET)
-	@./$(TARGET)
+	./$(TARGET)
 
-$(TARGET): lib
+$(TARGET): $(LIB_OBJ) main.c
+	rm -rf $(TARGET)
 	$(CC) $(LIB_OBJ) main.c -o $(TARGET) $(LDFLAGS)
 
 lib: $(LIB_OBJ)
@@ -48,6 +49,7 @@ fmt:
 	clang-format -i -style=file lib/*.c lib/*.h main.c
 
 clean:
+	rm -rf ./$(TARGET)
 	rm -rf *.o
 	rm -rf *.perf
 	rm -rf *.data

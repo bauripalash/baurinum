@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "baurinum.h"
 #include "stdlib.h"
 
@@ -5,7 +7,7 @@ static inline int is_endig(char c) { return c <= '9' && c >= '0'; }
 
 bnerr bn_set_digit(bnum* b, bdigit dig) {
     if (b->cap <= b->len + 1) {
-        bnerr err = bn_grow(b);
+        bnerr err = bn_grow_by(b, 20);
         if (err != BN_OK) {
             return err;
         }
@@ -22,15 +24,17 @@ bnerr bn_set_digit(bnum* b, bdigit dig) {
 // set a string (base 10)
 bnerr bn_set_str(bnum* b, char* str) {
     char* ptr = str;
-    int is_neg = 0;
+    printf("->ptr->%s", ptr);
     if (*ptr == '-') {
-        is_neg = 1;
+        b->sign = BN_NEG;
+        ptr++;
+    } else if (*ptr == '+') {
+        b->sign = BN_POS;
         ptr++;
     } else {
         b->sign = BN_POS;
     }
-    b->sign = is_neg;
-    while (*ptr) {
+    while (*ptr != '\0') {
         if (is_endig(*ptr)) {
             bnerr x = bn_set_digit(b, *ptr - '0');
             if (x != BN_OK) {
@@ -42,7 +46,7 @@ bnerr bn_set_str(bnum* b, char* str) {
         ptr++;
     }
 
-    bn_rev(b);
+    // bn_rev(b);
 
     return BN_OK;
 }
