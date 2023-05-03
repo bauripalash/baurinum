@@ -40,10 +40,17 @@ bnum _d(double x) {
     return num;
 }
 
-bnum _add(bnum* x, bnum* y) {
+bnum _add(bnum x, bnum y) {
     bnum result;
     bn_boot(&result);
-    bn_add(&result, x, y);
+    bn_add(&result, &x, &y);
+    return result;
+}
+
+bnum _sub(bnum x, bnum y) {
+    bnum result;
+    bn_boot(&result);
+    bn_sub(&result, &x, &y);
     return result;
 }
 

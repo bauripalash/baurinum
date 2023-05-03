@@ -100,9 +100,7 @@ bnerr bn_clone(bnum* res, bnum* input) {
 // Initialize l and make it a clone of r
 bnerr bn_dup_boot(bnum* l, bnum* r) {
     bnerr err = bn_boot(l);
-    if (err != BN_OK) {
-        return err;
-    }
+    errcheck;
     return bn_clone(l, r);
 }
 

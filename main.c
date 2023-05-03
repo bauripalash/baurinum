@@ -6,26 +6,37 @@
 
 #include "lib/baurinum.h"
 
+#define mask  ((((bdigit)1) << ((bdigit)60)) - ((bdigit)1))
+#define CB    __CHAR_BIT__
+#define SZ(t) ((size_t)__CHAR_BIT__ * sizeof(t))
+
 int main(void) {
     bnum a;
     bnum b;
     bnum c;
-    char* x = "1234567890";
 
-    //    char * y = "11111111111111111111111111111";
+    bnerr err;
+
     bn_boot(&a);
     bn_boot(&b);
     bn_boot(&c);
-    bnerr err = bn_set_str(&b, x);
-    if (err != BN_OK) {
-        fprintf(stderr, "set str failed");
-    }
-    err = bn_set_double(&c, 16473647634763746376476347637463.499);
-    bn_add(&a, &b, &c);
 
+    err = bn_set_int(&a, 11234);
+    if (err != BN_OK) {
+        printf("failed to set a\n");
+    }
+
+    // bdigit x = (bdigit)23 >> (bdigit)(__CHAR_BIT__ * sizeof(bdigit) - 1u);
+
+    // bdigit y = x & mask;
+
+    bn_set_int(&b, 23);
+    bn_sub(&c, &b, &a);
+    // printf("->->%d | %d | %lu\n" , CB ,  x , y);
     bn_debug(&a);
     bn_debug(&b);
     bn_debug(&c);
+
     bn_clear(&a);
     bn_clear(&b);
     bn_clear(&c);

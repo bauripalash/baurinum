@@ -1,7 +1,7 @@
 #include "baurinum.h"
 
 // (unsigned) Compare L and R; does not take sign into account;
-bn_comp_result bn_ucmp(bnum* l, bnum* r) {
+bn_comp_result bn_ucmp(const bnum* l, const bnum* r) {
     if (l->len > r->len) {
         return BN_GT;
     } else if (l->len < r->len) {
@@ -21,7 +21,7 @@ bn_comp_result bn_ucmp(bnum* l, bnum* r) {
 }
 
 //(Signed) compare
-bn_comp_result bn_cmp(bnum* l, bnum* r) {
+bn_comp_result bn_cmp(const bnum* l, const bnum* r) {
     if (l->sign != r->sign) {
         if (l->sign == BN_NEG) {
             return BN_LT;
