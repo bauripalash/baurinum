@@ -1,5 +1,8 @@
-# baurinum
-> Simple and somewhat fast prototype bignum library written in C
+# baurinum 🐢
+**Simple and somewhat fast prototype bignum library written in C**
+
+>Simplicity over speed
+
 
 
 ## Why
