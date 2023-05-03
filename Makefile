@@ -14,8 +14,8 @@ TARGET:=bnmain
 all: $(TARGET)
 	./$(TARGET)
 
-test: $(LIB_OBJ) tests/main.c
-	$(CC) $(LIB_OBJ) tests/main.c -o testobj $(LDFLAGS);
+test: $(LIB_OBJ) tests/test.c
+	$(CC) $(LIB_OBJ) tests/test.c -o testobj $(LDFLAGS);
 	./testobj
 
 $(TARGET): $(LIB_OBJ) main.c
