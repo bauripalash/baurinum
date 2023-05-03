@@ -6,6 +6,10 @@
 #define DEFAULT_DIGIT  10
 #define GROW_BY        1.5
 #define GROW_SIZE(cap) (cap + ((int)cap * GROW_BY))
+#define errcheck     \
+ if (err != BN_OK) { \
+  return err;        \
+ }
 
 // A single digit
 typedef uint64_t bdigit;
@@ -68,7 +72,8 @@ typedef enum {
     BN_OK = 1,
     BN_ERR_NOMEM = 2,
     BN_UNKNOWN_CHAR = 3,
-    BN_STR_WRITE_FAIL = 4
+    BN_STR_WRITE_FAIL = 4,
+    BN_NOT_INIT = 5,
 } bnerr;
 
 // Initialize a `bnnum`
@@ -121,11 +126,11 @@ bnerr bn_set_int64(bnum* b, int64_t n);
 bnerr bn_set_lli(bnum* b, long long int n);
 
 // (unsigned) Compare L and R; does not take sign into account;
-bn_comp_result bn_ucmp(bnum* l, bnum* r);
+bn_comp_result bn_ucmp(const bnum* l, const bnum* r);
 
 //(Signed) compare returns BN_LT , BN_GT , BN_EQ
 // see `bn_comp_result`
-bn_comp_result bn_cmp(bnum* l, bnum* r);
+bn_comp_result bn_cmp(const bnum* l, const bnum* r);
 
 // res = |inp|
 bnerr bn_abs(bnum* res, bnum* inp);
@@ -153,7 +158,8 @@ bnerr bn_dup_boot(bnum* l, bnum* r);
 
 // Zero the digits
 void bn_mkzero(bnum* b);
-
-bnerr bn_add(bnum* c, bnum* a, bnum* b);
-
+bnerr bn_u_add(bnum* c, const bnum* a, const bnum* b);
+bnerr bn_add(bnum* c, const bnum* a, const bnum* b);
+bnerr bn_u_sub(bnum* res, const bnum* a, const bnum* b);
+bnerr bn_sub(bnum* res, const bnum* a, const bnum* b);
 #endif

@@ -6,11 +6,13 @@
 static inline int is_endig(char c) { return c <= '9' && c >= '0'; }
 
 bnerr bn_set_digit(bnum* b, bdigit dig) {
+    if (b->digits == NULL) {
+        return BN_NOT_INIT;
+    }
     if (b->cap <= b->len + 1) {
         bnerr err = bn_grow_by(b, 20);
-        if (err != BN_OK) {
-            return err;
-        }
+
+        errcheck;
     }
     b->digits[b->len] = dig;
     b->len++;
@@ -36,10 +38,8 @@ bnerr bn_set_str(bnum* b, char* str) {
     }
     while (*ptr != '\0') {
         if (is_endig(*ptr)) {
-            bnerr x = bn_set_digit(b, *ptr - '0');
-            if (x != BN_OK) {
-                return x;
-            }
+            bnerr err = bn_set_digit(b, *ptr - '0');
+            errcheck;
         } else if (*ptr == '.') {
             // do nothing
             // just skip
@@ -111,9 +111,7 @@ bnerr bn_set_int(bnum* b, int n) {
 
     while (tn > 0) {
         bnerr err = bn_set_digit(b, (bdigit)tn % 10);
-        if (err != BN_OK) {
-            return err;
-        }
+        errcheck;
         tn /= 10;
     }
 
@@ -132,9 +130,7 @@ bnerr bn_set_uint64(bnum* b, uint64_t n) {
     uint64_t tn = n;
     while (tn > 0) {
         bnerr err = bn_set_digit(b, (bdigit)tn % 10);
-        if (err != BN_OK) {
-            return err;
-        }
+        errcheck;
         tn /= 10;
     }
 
@@ -153,9 +149,7 @@ bnerr bn_set_uint32(bnum* b, uint32_t n) {
     uint32_t tn = n;
     while (tn > 0) {
         bnerr err = bn_set_digit(b, (bdigit)tn % 10);
-        if (err != BN_OK) {
-            return err;
-        }
+        errcheck;
         tn /= 10;
     }
 
@@ -182,9 +176,7 @@ bnerr bn_set_int64(bnum* b, int64_t n) {
 
     while (tn > 0) {
         bnerr err = bn_set_digit(b, (bdigit)tn % 10);
-        if (err != BN_OK) {
-            return err;
-        }
+        errcheck;
         tn /= 10;
     }
 
@@ -211,9 +203,7 @@ bnerr bn_set_lli(bnum* b, long long int n) {
     while (tn > 0) {
         bnerr err = bn_set_digit(b, (bdigit)tn % 10);
 
-        if (err != BN_OK) {
-            return err;
-        }
+        errcheck;
         tn /= 10;
     }
 

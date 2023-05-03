@@ -3,9 +3,7 @@
 bnerr bn_abs(bnum* res, bnum* inp) {
     if (res != inp) {
         bnerr err = bn_clone(res, inp);
-        if (err != BN_OK) {
-            return err;
-        }
+        errcheck;
     }
 
     res->sign = BN_ZERO;
@@ -16,9 +14,7 @@ bnerr bn_abs(bnum* res, bnum* inp) {
 bnerr bn_make_neg(bnum* res, bnum* inp) {
     if (res != inp) {
         bnerr err = bn_clone(res, inp);
-        if (err != BN_OK) {
-            return err;
-        }
+        errcheck;
     }
 
     if (inp->len == 0) {
