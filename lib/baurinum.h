@@ -64,7 +64,7 @@ typedef struct bnum {
 // BN_ERR_NOMEM -> Failed to allocate memory for some operation(s)
 // BN_UNKNOWN_CHAR -> Unknown char found while parsing the string
 // to convert it to a `bnum`
-typedef enum { BN_OK = 1, BN_ERR_NOMEM = 2, BN_UNKNOWN_CHAR = 3 } bnerr;
+typedef enum { BN_OK = 1, BN_ERR_NOMEM = 2, BN_UNKNOWN_CHAR = 3 , BN_STR_WRITE_FAIL = 4 } bnerr;
 
 // Initialize a `bnnum`
 // set sign to 'BN_ZERO'
@@ -93,6 +93,12 @@ void bn_rev(bnum* b);
 
 // set a string (base 10) to `b`
 bnerr bn_set_str(bnum* b, char* str);
+
+// set double (wrapper for `bn_set_str`) to `b`
+bnerr bn_set_double(bnum * b , double  n);
+
+// set long double (wrapper for `bn_set_str`) to `b`
+bnerr bn_set_ldouble(bnum * b ,long double  n);
 
 // set integer to `b`
 bnerr bn_set_int(bnum* b, int n);
@@ -142,5 +148,7 @@ bnerr bn_dup_boot(bnum* l, bnum* r);
 
 // Zero the digits
 void bn_mkzero(bnum* b);
+
+bnerr bn_add(bnum* c, bnum* a, bnum* b);
 
 #endif

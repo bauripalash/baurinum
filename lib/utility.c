@@ -32,7 +32,7 @@ void bn_print(bnum* b) {
         return;
     }
 
-    // printf("%c", b->sign != BN_NEG ? '+' : '-');
+    printf("%c", b->sign != BN_NEG ? '+' : '-');
     for (int i = b->len - 1; i >= 0; i--) {
         printf("%lu", (uint64_t)b->digits[i]);
     }
