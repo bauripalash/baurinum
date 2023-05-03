@@ -24,7 +24,7 @@ bnerr bn_set_digit(bnum* b, bdigit dig) {
 // set a string (base 10)
 bnerr bn_set_str(bnum* b, char* str) {
     char* ptr = str;
-    //printf("->ptr->%c", *ptr);
+    // printf("->ptr->%c", *ptr);
     if (*ptr == '+') {
         b->sign = BN_POS;
         ptr++;
@@ -40,9 +40,9 @@ bnerr bn_set_str(bnum* b, char* str) {
             if (x != BN_OK) {
                 return x;
             }
-        }else if (*ptr == '.') {
-           // do nothing
-           // just skip
+        } else if (*ptr == '.') {
+            // do nothing
+            // just skip
         } else {
             return BN_UNKNOWN_CHAR;
         }
@@ -54,47 +54,47 @@ bnerr bn_set_str(bnum* b, char* str) {
     return BN_OK;
 }
 
-bnerr bn_set_double(bnum * b , double  n){
-    int len = snprintf(NULL, 0, "%.0f" , n );
-    char * temp_str = (char*)calloc(len + 1, sizeof(char));
+bnerr bn_set_double(bnum* b, double n) {
+    int len = snprintf(NULL, 0, "%.0f", n);
+    char* temp_str = (char*)calloc(len + 1, sizeof(char));
     if (temp_str == NULL) {
-    return BN_ERR_NOMEM;
+        return BN_ERR_NOMEM;
     }
-    int nlen = snprintf(temp_str,len+1, "%.0f" , n);
+    int nlen = snprintf(temp_str, len + 1, "%.0f", n);
     if (nlen < len) {
-    free(temp_str);
-    return BN_STR_WRITE_FAIL ;
+        free(temp_str);
+        return BN_STR_WRITE_FAIL;
     }
-    printf("SETD -> %s\n" , temp_str);
+    // printf("SETD -> %s\n", temp_str);
     bnerr err = bn_set_str(b, temp_str);
 
     if (err != BN_OK) {
-    free(temp_str);
-    return err;
+        free(temp_str);
+        return err;
     }
 
-    return BN_OK; 
+    return BN_OK;
 }
 
-bnerr bn_set_ldouble(bnum * b ,long double  n){
-    int len = snprintf(NULL, 0, "%.0Lf" , n );
-    char * temp_str = (char*)calloc(len + 1, sizeof(char));
+bnerr bn_set_ldouble(bnum* b, long double n) {
+    int len = snprintf(NULL, 0, "%.0Lf", n);
+    char* temp_str = (char*)calloc(len + 1, sizeof(char));
     if (temp_str == NULL) {
-    return BN_ERR_NOMEM;
+        return BN_ERR_NOMEM;
     }
-    int nlen = snprintf(temp_str,len+1, "%.0Lf" , n);
+    int nlen = snprintf(temp_str, len + 1, "%.0Lf", n);
     if (nlen < len) {
-    free(temp_str);
-    return BN_STR_WRITE_FAIL ;
+        free(temp_str);
+        return BN_STR_WRITE_FAIL;
     }
     bnerr err = bn_set_str(b, temp_str);
 
     if (err != BN_OK) {
-    free(temp_str);
-    return err;
+        free(temp_str);
+        return err;
     }
 
-    return BN_OK; 
+    return BN_OK;
 }
 
 // set integer

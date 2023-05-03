@@ -14,6 +14,10 @@ TARGET:=bnmain
 all: $(TARGET)
 	./$(TARGET)
 
+test: $(LIB_OBJ) tests/main.c
+	$(CC) $(LIB_OBJ) tests/main.c -o testobj $(LDFLAGS);
+	./testobj
+
 $(TARGET): $(LIB_OBJ) main.c
 	rm -rf $(TARGET)
 	$(CC) $(LIB_OBJ) main.c -o $(TARGET) $(LDFLAGS)
@@ -46,9 +50,10 @@ prof: perf_build
 	gprof ./$(TARGET) > baurinum.gmon.txt
 
 fmt:
-	clang-format -i -style=file lib/*.c lib/*.h main.c
+	clang-format -i -style=file lib/*.c lib/*.h main.c tests/*.c tests/*.h
 
 clean:
+	rm -rf ./testobj
 	rm -rf ./$(TARGET)
 	rm -rf *.o
 	rm -rf *.perf

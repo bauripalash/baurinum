@@ -11,7 +11,7 @@ int main(void) {
     bnum b;
     bnum c;
     char* x = "1234567890";
-    
+
     //    char * y = "11111111111111111111111111111";
     bn_boot(&a);
     bn_boot(&b);
@@ -20,8 +20,8 @@ int main(void) {
     if (err != BN_OK) {
         fprintf(stderr, "set str failed");
     }
-    err = bn_set_double(&c , 16473647634763746376476347637463.499);
-    bn_add(&a, &b, &c); 
+    err = bn_set_double(&c, 16473647634763746376476347637463.499);
+    bn_add(&a, &b, &c);
 
     bn_debug(&a);
     bn_debug(&b);
