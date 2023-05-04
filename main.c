@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -25,6 +26,13 @@ int main(void) {
     if (err != BN_OK) {
         printf("failed to set a\n");
     }
+
+    char* sa = bn_as_str(&a, true);
+
+    if (sa != NULL) {
+        printf("tostr -> %s\n", sa);
+    }
+    free(sa);
 
     // bdigit x = (bdigit)23 >> (bdigit)(__CHAR_BIT__ * sizeof(bdigit) - 1u);
 

@@ -1,6 +1,7 @@
 #ifndef baurinum_h
 #define baurinum_h
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #define DEFAULT_DIGIT  10
@@ -103,6 +104,7 @@ void bn_rev(bnum* b);
 
 // set a string (base 10) to `b`
 bnerr bn_set_str(bnum* b, char* str);
+char* bn_as_str(bnum* b, bool sign);
 
 // set double (wrapper for `bn_set_str`) to `b`
 bnerr bn_set_double(bnum* b, double n);
