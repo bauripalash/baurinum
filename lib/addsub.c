@@ -26,7 +26,6 @@ bnerr bn_u_add(bnum* c, const bnum* a, const bnum* b) {
     int min;
     int max;
     const bnum* bgx;
-    bnerr err;
     if (a->len > b->len) {
         min = b->len;
         max = a->len;
@@ -39,7 +38,7 @@ bnerr bn_u_add(bnum* c, const bnum* a, const bnum* b) {
 
     // printf("max->%d|min->%d\n", max, min);
     if (c->cap <= max + 1) {
-        err = bn_grow_by(c, max + 1);
+        bnerr err = bn_grow_by(c, max + 1);
         errcheck;
     }
 

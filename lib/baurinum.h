@@ -102,6 +102,10 @@ bnerr bn_set_digit(bnum* b, bdigit dig);
 // reverse the endian-ness
 void bn_rev(bnum* b);
 
+// return a new string of `str` reversed
+// must free result
+char* strrev(const char* str);
+
 // set a string (base 10) to `b`
 bnerr bn_set_str(bnum* b, char* str);
 char* bn_as_str(bnum* b, bool sign);

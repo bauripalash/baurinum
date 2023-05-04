@@ -1,11 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "baurinum.h"
 
 /*
  * Utility Functions
  */
+
+char* strrev(const char* str) {
+    int len = strlen(str);
+    char* tstr = (char*)calloc(len + 1, sizeof(char));
+    if (tstr == NULL) {
+        return NULL;
+    }
+
+    for (int i = 0; i < len; i++) {
+        tstr[i] = str[len - i - 1];
+    }
+
+    tstr[len] = '\0';
+    return tstr;
+}
 
 char* bnsign_to_str(bnsign s) {
     if (s == BN_ZERO) {
