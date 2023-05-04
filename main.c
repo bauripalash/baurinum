@@ -29,9 +29,7 @@ int main(void) {
 
     char* sa = bn_as_str(&a, true);
 
-    if (sa != NULL) {
-        printf("tostr -> %s\n", sa);
-    }
+    printf("tostr -> %s\n", sa);
     free(sa);
 
     // bdigit x = (bdigit)23 >> (bdigit)(__CHAR_BIT__ * sizeof(bdigit) - 1u);
@@ -40,6 +38,7 @@ int main(void) {
 
     bn_set_int(&b, 23);
     bn_sub(&c, &b, &a);
+
     // printf("->->%d | %d | %lu\n" , CB ,  x , y);
     bn_debug(&a);
     bn_debug(&b);

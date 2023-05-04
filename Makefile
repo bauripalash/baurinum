@@ -32,10 +32,16 @@ check:
 	cppcheck --force --inline-suppr -I $(LIB_DIR) --enable=all $(LIB_SRC) main.c
 
 memcheck: $(TARGET)
-	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(TARGET)
+	valgrind -v -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(TARGET)
 
 debug: $(TARGET)
 	gdb ./$(TARGET)
+
+build: LIB_CFLAGS:=-O3 -Wall -std=c11 
+build:LDFLAGS:=-static -lm -flto 
+build: clean lib
+build:
+	$(CC) $(LIB_OBJ) main.c -o $(TARGET) $(LDFLAGS)
 
 perf_build: LIB_CFLAGS:=-O3 $(LIB_CFLAGS) -pg
 perf_build: LDFLAGS+=-flto -pg
