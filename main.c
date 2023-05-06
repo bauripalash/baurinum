@@ -36,8 +36,8 @@ int main(void) {
 
     // bdigit y = x & mask;
 
-    bn_set_int(&b, 23);
-    bn_sub(&c, &b, &a);
+    bn_set_str(&b, "239999999999999999");
+    bn_sub(&c, &a, &b);
 
     // printf("->->%d | %d | %lu\n" , CB ,  x , y);
     bn_debug(&a);

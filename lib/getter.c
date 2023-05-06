@@ -7,7 +7,9 @@
 
 char* bn_as_str(bnum* b, bool sign) {
     int len = b->len + 1;
-    //
+    if (sign) {
+        len++;
+    }
     int slen = 0;
     int blen = b->len;
 
@@ -27,22 +29,19 @@ char* bn_as_str(bnum* b, bool sign) {
     char* ptr = str;
 
     if (sign) {
-        int w =
-            snprintf(ptr, slen + 1 - (ptr - str), "%s", bnsign_to_str(b->sign));
-        // printf("w->%d\n" , w);
+        int w = snprintf(ptr, slen + 1 - (ptr - str), "%c",
+                         b->sign != BN_NEG ? '+' : '-');
         if (w < 0) {
             free(str);
             return NULL;
         }
 
         ptr++;
-        // off += w;
     }
 
     for (int i = 0; i < blen; i++) {
-        // printf("%d|_s_t_r->'%s'\n",i ,str);
-        int wrote = snprintf(ptr, slen + 1 - (ptr - str), "%lu",
-                             b->digits[blen - i - 1]);
+        int wrote = snprintf(ptr, slen + 1 - (ptr - str), "%d",
+                             (int)b->digits[blen - i - 1]);
         if (wrote < 0) {
             free(str);
             return NULL;
@@ -50,7 +49,6 @@ char* bn_as_str(bnum* b, bool sign) {
 
         ptr += wrote;
     }
-    // printf("hello\n");
-    // printf(">>->%s",str);
+    *ptr = '\0';
     return str;
 }

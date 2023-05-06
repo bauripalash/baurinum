@@ -32,7 +32,7 @@ check:
 	cppcheck --force --inline-suppr -I $(LIB_DIR) --enable=all $(LIB_SRC) main.c
 
 memcheck: $(TARGET)
-	valgrind -v -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(TARGET)
+	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(TARGET)
 
 debug: $(TARGET)
 	gdb ./$(TARGET)
