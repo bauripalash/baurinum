@@ -27,7 +27,7 @@ int main(void) {
         printf("failed to set a\n");
     }
 
-    char* sa = bn_as_str(&a, true);
+    char* sa = bn_as_str(&a, false);
 
     printf("tostr -> %s\n", sa);
     free(sa);

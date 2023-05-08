@@ -73,6 +73,8 @@ bnerr bn_set_double(bnum* b, double n) {
         return err;
     }
 
+    free(temp_str);
+
     return BN_OK;
 }
 
