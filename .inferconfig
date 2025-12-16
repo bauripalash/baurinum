@@ -1,0 +1,6 @@
+{
+    "skip-analysis-in-path": [
+		"build/_deps/",
+		"tests/"
+    ]
+}
